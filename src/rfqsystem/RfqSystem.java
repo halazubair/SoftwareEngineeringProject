@@ -8,7 +8,7 @@ public class RfqSystem {
         Scanner i = new Scanner(System.in);
 
         // parts database
-        Parts[] parts = new Parts[10];
+        Parts[] parts = new Parts[12];
         parts[0] = new Parts("Bearing", "B100", 21122, 50, 2000,   "Supplier A");
         parts[1] = new Parts("Bearing", "B100", 21122, 50, 1500,   "Supplier B");
         parts[2] = new Parts("Belt",    "BL9",  61203, 300, 12.0, "Supplier A");
@@ -19,6 +19,8 @@ public class RfqSystem {
         parts[7] = new Parts("Belt",    "BL9",  90000, 250, 12.0, "Supplier A");
         parts[8] = new Parts("Filter",  "F300", 14370, 60,  7.0,  "Supplier E");
         parts[9] = new Parts("Bearing", "B100", 21122, 50,  1200,  "Supplier D");
+        parts[10] = new Parts("Bearing", "B100", 21122, 50,  1999,  "Supplier H");
+
 
         System.out.println("-------Welcome to the RFQ System!-------");
         System.out.println("--------Please choose your role:-------");
@@ -33,14 +35,12 @@ public class RfqSystem {
             choice = i.nextInt();
 
             if (choice == 1) {
-                System.out.println("Buyer has been selected!");
-                break;
-            } else if (choice == 2) {
-                System.out.println("Supplier has been selected!");
+                System.out.println("Role: Buyer has been selected!");
                 break;
             } else {
-                System.out.println("Invalid choice. Please select a valid role (1 = Buyer, 2 = Supplier).");
-            }
+                System.out.println("Role: Supplier has been selected!");
+                break;
+            } 
         }
 
         //2nd Core Function -> Buyer enters part info 
