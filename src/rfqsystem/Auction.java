@@ -1,59 +1,28 @@
-
 package rfqsystem;
-import java.time.LocalDateTime;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class Auction {
 
-    int sessionID;
-    int rfqId;
-    LocalDateTime startTime;
-    LocalDateTime endTime;
-    int winnerQuotationId;
-    
-    public void setSessionID(int sessionID) {
-        this.sessionID = sessionID;
-    }
+    public static boolean auctionOpen = false;          // shared flag
 
-    public void setRfqId(int rfqId) {
-        this.rfqId = rfqId;
-    }
+    private static final long AUCTION_DURATION_MS = 30L * 1000L;  // 10 seconds
 
-    public void setStartTime(LocalDateTime startTime) {
-        this.startTime = startTime;
-    }
+    public static void startAuctionTimer() {
+        auctionOpen = true;
 
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime;
-    }
+        System.out.println("\n Auction started. You have 10 seconds to choose and confirm.");
 
-    public void setWinnerQuotationId(int winnerQuotationId) {
-        this.winnerQuotationId = winnerQuotationId;
-    }
+        Timer timer = new Timer();
 
-    public int getSessionID() {
-        return sessionID;
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                auctionOpen = false;
+                System.out.println("\n---AUCTION TIME IS OVER (30 seconds passed)---");
+                timer.cancel();
+            }
+        }, AUCTION_DURATION_MS);
     }
-
-    public int getRfqId() {
-        return rfqId;
-    }
-
-    public LocalDateTime getStartTime() {
-        return startTime;
-    }
-
-    public LocalDateTime getEndTime() {
-        return endTime;
-    }
-
-    public int getWinnerQuotationId() {
-        return winnerQuotationId;
-    }
-
-    @Override
-    public String toString() {
-        return "Auction{" + "sessionID=" + sessionID + ", rfqId=" + rfqId + ", startTime=" + startTime + ", endTime=" + endTime + ", winnerQuotationId=" + winnerQuotationId + '}';
-    }
-    
-    
-    
 }

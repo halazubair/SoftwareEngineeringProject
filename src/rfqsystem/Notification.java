@@ -66,6 +66,14 @@ public class Notification {
     public boolean isIsSent() {
         return isSent;
     }
+    
+    
+    public static void sendNotification(String message) {
+        // For now, just print to console (simulating sending a notification)
+        System.out.println("\n----------Notification Sent Successfully----------");
+        System.out.println(message);
+        System.out.println("-------------------------------\n");
+    }
 
     @Override
     public String toString() {

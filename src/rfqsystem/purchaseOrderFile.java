@@ -3,7 +3,7 @@ package rfqsystem;
 import java.util.*;
 
 import java.time.LocalDateTime;
-public class Attachment {
+public class purchaseOrderFile {
     
     String fileName;
     String fileType;

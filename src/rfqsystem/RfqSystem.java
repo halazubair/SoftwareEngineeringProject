@@ -8,18 +8,23 @@ public class RfqSystem {
         Scanner i = new Scanner(System.in);
 
         // parts database
-        Parts[] parts = new Parts[12];
+        Parts[] parts = new Parts[20];
         parts[0] = new Parts("Bearing", "B100", 21122, 50, 2000,   "Supplier A");
         parts[1] = new Parts("Bearing", "B100", 21122, 50, 1500,   "Supplier B");
-        parts[2] = new Parts("Belt",    "BL9",  61203, 300, 12.0, "Supplier A");
-        parts[3] = new Parts("Filter",  "F300", 15583, 100, 8.75, "Supplier C");
+        parts[2] = new Parts("Belt",    "BL9",  61200, 300, 1640, "Supplier A");
+        parts[3] = new Parts("Filter",  "F300", 15583, 100, 8.75, "Supplier B");
         parts[4] = new Parts("Bearing", "B100", 21122, 50,  990,  "Supplier D");
         parts[5] = new Parts("Filter",  "F300", 15086, 120, 8.75, "Supplier C");
         parts[6] = new Parts("Bearing", "B100", 21122, 50,  1100,  "Supplier F");
-        parts[7] = new Parts("Belt",    "BL9",  90000, 250, 12.0, "Supplier A");
+        parts[7] = new Parts("Belt",    "BL9",  61200, 300, 1450, "Supplier B");
         parts[8] = new Parts("Filter",  "F300", 14370, 60,  7.0,  "Supplier E");
-        parts[9] = new Parts("Bearing", "B100", 21122, 50,  1200,  "Supplier D");
+        parts[9] = new Parts("Bearing", "B100", 21122, 50,  1200,  "Supplier E");
         parts[10] = new Parts("Bearing", "B100", 21122, 50,  1999,  "Supplier H");
+        parts[11] = new Parts("TurbineBlade", "TBX90", 99999,  2, 8000, "Supplier X"); 
+        parts[12] = new Parts("TurbineBlade", "TBX90", 99999,  2, 8500, "Supplier L"); 
+        parts[13] = new Parts("FuelControlUnit", "HLX44", 44444, 1, 15000, "Supplier Z"); 
+        parts[14] = new Parts("FuelControlUnit", "HLX44", 44444, 1, 14200, "Supplier N");
+        
 
 
         System.out.println("-------Welcome to the RFQ System!-------");
@@ -45,7 +50,7 @@ public class RfqSystem {
 
         //2nd Core Function -> Buyer enters part info 
         if (choice == 1) {
-            System.out.println("------------Enter part information-----------");
+            System.out.println("------------Upload part information-----------");
 
             System.out.print("Enter Part Name: ");     // e.g. Bearing, Belt, Filter
             String name = i.next();
@@ -59,19 +64,63 @@ public class RfqSystem {
             System.out.print("Enter the desired Quantity: ");
             int partQuantity = i.nextInt();
 
-            searchPart(parts, name, partModel, partId, partQuantity);
+            
+             
+            // 1) Check if the part is rare
+    boolean rare = isRarePart(name, partModel, partId);
+
+    if (rare) {
+        // 🔹 RARE PART FLOW (with timer)
+        System.out.println("\n>>> This is a RARE part. Auction time: 10 seconds.");
+        Auction.startAuctionTimer();   // starts 10-second timer in Auction class
+
+        // show all matching rare offers while timer is running
+        searchPart(parts, name, partModel, partId, partQuantity);
+
+        // if time already finished, stop
+        if (!Auction.auctionOpen) {
+            System.out.println("Auction ended before you could choose a supplier. No order placed.");
         } else {
-            System.out.println("Supplier functionality not implemented yet.");
+            Parts chosenPart = chooseSupplier(parts, name, partModel, partId, partQuantity, i);
+
+            if (!Auction.auctionOpen) {
+                System.out.println("Auction ended before confirmation. No order placed.");
+            } else {
+                finalizeOrder(chosenPart, partQuantity, i);
+            }
         }
 
-        i.close();
+    } else {
+        // 🔹 NORMAL PART FLOW (no auction, works exactly like before)
+        searchPart(parts, name, partModel, partId, partQuantity);
+
+        Parts chosenPart = chooseSupplier(parts, name, partModel, partId, partQuantity, i);
+        finalizeOrder(chosenPart, partQuantity, i);
     }
+        } else {
+           System.out.println("Supplier functionality not implemented yet.");
+           }
+           
+          //------------------------------------------------------------------------  
+            
+          /*Parts chosenPart = chooseSupplier(parts, name, partModel, partId, partQuantity, i);
+          finalizeOrder(chosenPart, partQuantity, i);*/
+          //------------------------------------------------------------------------ 
+        /*} else {
+            System.out.println("Supplier functionality not implemented yet.");
+        }*/
+
+     
+  
+                
+        i.close();}
+    
     public static void searchPart(Parts[] parts, String name, String partModel, int partId, int partQuantity) {
 
         boolean isFound = false;
 
-        System.out.println("\nSearching for part....");
-
+        System.out.println("\nAttachment Uploaded. Searching for part....");
+        //----
         for (int i = 0; i < parts.length; i++) {
             Parts p = parts[i];
 
@@ -104,4 +153,100 @@ public class RfqSystem {
             System.out.println("No matching parts are available to display.");
         }
     }
+    
+    
+    
+    
+    
+    public static Parts chooseSupplier(Parts[] parts,String name,String partModel,int partId,int partQuantity,Scanner i){
+
+    System.out.print("\nPlease enter the name of the supplier you prefer to buy from:");
+
+    // Clear the leftover newline from previous nextInt()
+    i.nextLine();
+
+    String chosenSupplier = i.nextLine();
+
+    boolean supplierFound = false;
+
+    System.out.println("\nSearching for the part with supplier: " + chosenSupplier + " ...");
+
+    for (int x = 0; x < parts.length; x++) {
+        Parts p = parts[x];
+
+        if (p == null) {
+            continue;
+        }
+
+        // Same part info + chosen supplier
+        if (p.partName.equalsIgnoreCase(name) &&
+            p.partModel.equalsIgnoreCase(partModel) &&
+            p.partId == partId &&
+            p.quantity >= partQuantity &&
+            p.Supplier.equalsIgnoreCase(chosenSupplier)) {
+
+            supplierFound = true;
+
+            System.out.println("------------Chosen Part-----------");
+            System.out.println("Part ID:            " + p.partId);
+            System.out.println("Name:               " + p.partName);
+            System.out.println("Model:              " + p.partModel);
+            System.out.println("Supplier:           " + p.Supplier);
+            System.out.println("Available Quantity: " + p.quantity);
+            System.out.println("Unit Price:         " + p.price);
+            System.out.println("Total price for quantity (" + partQuantity + ") = "
+                               + (p.price * partQuantity));
+            System.out.println("-------------------------------------");
+            return p;
+        }
+    }
+
+    if (!supplierFound) {
+        System.out.println("No matching part found for supplier: " + chosenSupplier);
+    }
+        return null;
+}
+    
+    
+    
+    
+   
+   public static void finalizeOrder(Parts chosen, int partQuantity, Scanner i) {
+    if (chosen == null) {
+        System.out.println("\nCannot finalize order because no valid supplier/part was selected.");
+        return;
+    }
+
+    System.out.print("\nIs this the correct part you want to order from this supplier? (Y/N): ");
+    String confirm = i.next();
+
+    if (confirm.equalsIgnoreCase("Y")) {
+
+        // Send notification (Notifications class)
+        Notification.sendNotification(
+            "New order confirmed for supplier " + chosen.Supplier +
+            " | Part: " + chosen.partName + " (" + chosen.partModel + ")" +
+            " | Qty: " + partQuantity
+        );
+
+        // Print receipt (Receipt class)
+        Invoice.printReceipt(chosen, partQuantity);
+
+    } else {
+        System.out.println("Order not finalized.");
+    }
+}
+   
+   
+   public static boolean isRarePart(String name, String partModel, int partId) {
+    
+    if (partModel.equalsIgnoreCase("TBX90")) {
+        return true;
+    }
+     if (partModel.equalsIgnoreCase("HLX44")) {
+        return true;
+    }
+    return false;
+}
+     
 }
