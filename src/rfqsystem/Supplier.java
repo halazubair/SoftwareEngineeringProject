@@ -1,58 +1,47 @@
 
 package rfqsystem;
 
+import java.util.Scanner;
+
 public class Supplier {
-
-   
-    String supplierId;
-    String companyName;
-    double rating;
-    String region;
     
-     public Supplier(String supplierId, String companyName, double rating, String region) {
-        this.supplierId = supplierId;
-        this.companyName = companyName;
-        this.rating = rating;
-        this.region = region;
+    public static void showSupplierParts(Parts[] parts, Scanner i) {
+
+        System.out.println("------------ SUPPLIER VIEW ------------");
+
+        System.out.print("Enter your Supplier Name: ");
+
+        // clear leftover newline from previous nextInt()
+        i.nextLine();
+        String supplierName = i.nextLine();   // e.g. "Supplier A"
+
+        boolean found = false;
+
+        System.out.println("\nListing all parts for supplier: " + supplierName + "\n");
+
+        for (int x = 0; x < parts.length; x++) {
+            Parts p = parts[x];
+
+            if (p == null) {
+                continue;
+            }
+
+            if (p.Supplier.equalsIgnoreCase(supplierName)) {
+                found = true;
+
+                System.out.println("------------ Part -----------");
+                System.out.println("Part ID:            " + p.partId);
+                System.out.println("Name:               " + p.partName);
+                System.out.println("Model:              " + p.partModel);
+                System.out.println("Available Quantity: " + p.quantity);
+                System.out.println("Unit Price:         " + p.price);
+                System.out.println("---------------------------------");
+            }
+        }
+
+        if (!found) {
+            System.out.println("No parts found for supplier: " + supplierName);
+        }
     }
 
-    public void setSupplierId(String supplierId) {
-        this.supplierId = supplierId;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
-    public void setRating(double rating) {
-        this.rating = rating;
-    }
-
-    public void setRegion(String region) {
-        this.region = region;
-    }
-
-    public String getSupplierId() {
-        return supplierId;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public double getRating() {
-        return rating;
-    }
-
-    public String getRegion() {
-        return region;
-    }
-
-   
-     @Override
-    public String toString() {
-        return "Supplier{" + "supplierId=" + supplierId + ", companyName=" + companyName + ", rating=" + rating + ", region=" + region + '}';
-    }
-    
-    
 }

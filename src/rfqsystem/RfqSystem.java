@@ -9,7 +9,7 @@ public class RfqSystem {
 
         //---------------------------Part Array---------------------------------
         
-        Parts[] parts = new Parts[20];
+        Parts[] parts = new Parts[50];
         parts[0] = new Parts("Bearing", "B100", 21122, 50, 2000,   "Supplier A");
         parts[1] = new Parts("Bearing", "B100", 21122, 50, 1500,   "Supplier B");
         parts[2] = new Parts("Belt",    "BL9",  61200, 300, 1640, "Supplier A");
@@ -36,7 +36,7 @@ public class RfqSystem {
 
         int choice = 0;
 
-        //1st Core Function-> choose role 
+        //-----------------choose role-------------------- 
         while (true) {
             System.out.print("Enter your choice: ");
             choice = i.nextInt();
@@ -50,7 +50,7 @@ public class RfqSystem {
             } 
         }
 
-        //2nd Core Function -> Buyer enters part info 
+        //-----------------------Choice 1=Buyer---------------------- 
         if (choice == 1) {
             System.out.println("------------Upload part information-----------");
 
@@ -68,7 +68,7 @@ public class RfqSystem {
 
             
              
-         //---------------------------Rare Part---------------------------------
+         //---------------------------Rare Part AUCTION---------------------------------
     boolean rare = isRarePart(name, partModel, partId);
 
     if (rare) {
@@ -76,7 +76,7 @@ public class RfqSystem {
         System.out.println("\n This is a Rare Part. Auction time: 30 seconds.");
         Auction.startAuctionTimer();   
 
-        searchPart(parts, name, partModel, partId, partQuantity);
+        purchaseOrderFile.purchaseOrderAttachment(parts, name, partModel, partId, partQuantity);
         //time has finished
         if (!Auction.auctionOpen) {
             System.out.println("Auction ended before you could choose a supplier. No order placed.");
@@ -91,69 +91,33 @@ public class RfqSystem {
                 finalizeOrder(chosenPart, partQuantity, i);
             }
         }
-
+    
     } else {
-        searchPart(parts, name, partModel, partId, partQuantity);
-
+        purchaseOrderFile.purchaseOrderAttachment(parts, name, partModel, partId, partQuantity);  
         Parts chosenPart = chooseSupplier(parts, name, partModel, partId, partQuantity, i);
         finalizeOrder(chosenPart, partQuantity, i);
     }
-    //----------------------If user chose 2=supplier----------------------------
+    //----------------------choice 2=Supplier----------------------------
         } else {
-           System.out.println("Supplier functionality not implemented yet.");
+            System.out.println("Choose your action: ");
+            System.out.println("1.Display My Parts");
+            System.out.println("2.Add Parts");
+            int action=i.nextInt();
+            if(action==1){
+                Supplier s=new Supplier();
+                s.showSupplierParts(parts, i);
+            }else if(action==2){
+                    Parts.addPart(parts, i);
+            }else{
+                System.out.println("Boo");
+            }
+
            }
-           
-          //------------------------------------------------------------------------  
-            
-          /*Parts chosenPart = chooseSupplier(parts, name, partModel, partId, partQuantity, i);
-          finalizeOrder(chosenPart, partQuantity, i);*/
-          //------------------------------------------------------------------------ 
-        /*} else {
-            System.out.println("Supplier functionality not implemented yet.");
-        }*/
+          
         
-        i.close();}
+        i.close();
+    }//end of main
 //-----------------------------------------Methods-------------------------------------------
-    public static void searchPart(Parts[] parts, String name, String partModel, int partId, int partQuantity) {
-
-        boolean isFound = false;
-
-        System.out.println("\n------------Attachment Uploaded.------------"
-                + " Searching for part....");
-        //----
-        for (int i = 0; i < parts.length; i++) {
-            Parts p = parts[i];
-
-            if (p == null) {
-                continue; // safety in case of null slots
-            }
-
-            // Match on name, model, id, and ensure enough quantity
-            if (p.partName.equalsIgnoreCase(name) &&
-                p.partModel.equalsIgnoreCase(partModel) &&
-                p.partId == partId &&
-                p.quantity >= partQuantity) {
-
-                isFound = true;
-
-                System.out.println("------------Part Found-----------");
-                System.out.println("Part ID:            " + p.partId);
-                System.out.println("Name:               " + p.partName);
-                System.out.println("Model:              " + p.partModel);
-                System.out.println("Supplier:           " + p.Supplier);
-                System.out.println("Available Quantity: " + p.quantity);
-                System.out.println("Unit Price:         " + p.price);
-                System.out.println("Total price for quantity (" + partQuantity + ") = " 
-                                   + (p.price * partQuantity));
-                System.out.println("---------------------------------");
-            }
-        }
-
-        if (!isFound) {
-            System.out.println("No matching parts are available to display.");
-        }
-    }
-//------------------------------------------------------------------------------------
 
     public static Parts chooseSupplier(Parts[] parts,String name,String partModel,int partId,int partQuantity,Scanner i){
 
@@ -225,6 +189,7 @@ public class RfqSystem {
 
     } else {
         System.out.println("Order not finalized.");
+        Invoice.notFinalizedInvoice(chosen, partQuantity);
     }
 }
 //------------------------------------------------------------------------------------
@@ -237,5 +202,7 @@ public class RfqSystem {
         return true;
     }
     return false;
-}   
+}
+//---------------------------------------------------------------------------------------
+   
 }

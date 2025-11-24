@@ -2,17 +2,22 @@
 package rfqsystem;
 
 import java.util.logging.Logger;
+import java.util.*;
 
 public class Parts {
-
+    
+    
     String partName;
     String partModel;
     int partId;
     int quantity;
     double price;
-    String Supplier; 
-    
-    public Parts(String partName, String partModel, int partId, int quantity, double price, String Supplier) {
+    String Supplier;
+
+    // Constructor
+    public Parts(String partName, String partModel, int partId,
+                 int quantity, double price, String Supplier) {
+
         this.partName = partName;
         this.partModel = partModel;
         this.partId = partId;
@@ -21,57 +26,57 @@ public class Parts {
         this.Supplier = Supplier;
     }
 
-    public void setPartName(String partName) {
-        this.partName = partName;
-    }
 
-    public void setPartModel(String partModel) {
-        this.partModel = partModel;
-    }
+    public static void addPart(Parts[] parts, Scanner i) {
 
-    public void setPartId(int partId) {
-        this.partId = partId;
-    }
+        int index = -1;
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
+        // Find empty position in array
+        for (int j = 0; j < parts.length; j++) {
+            if (parts[j] == null) {
+                index = j;
+                break;
+            }
+        }
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
+        if (index == -1) {
+            System.out.println("Cannot add more parts. The list is full.");
+            return;
+        }
 
-    public void setSupplier(String Supplier) {
-        this.Supplier = Supplier;
-    }
+        System.out.println("---------Add Your New Part---------");
 
-    public String getPartName() {
-        return partName;
-    }
+        System.out.print("Enter Part Name: ");
+        String name = i.next();
 
-    public String getPartModel() {
-        return partModel;
-    }
+        System.out.print("Enter  Part Model: ");
+        String model = i.next();
 
-    public int getPartId() {
-        return partId;
-    }
+        System.out.print("Enter Part ID: ");
+        int id = i.nextInt();
 
-    public int getQuantity() {
-        return quantity;
-    }
+        System.out.print("Enter Quantity: ");
+        int quantity = i.nextInt();
 
-    public double getPrice() {
-        return price;
-    }
+        System.out.print("Enter Price: ");
+        double price = i.nextDouble();
 
-    public String getSupplier() {
-        return Supplier;
-    }
+        System.out.print("Enter Supplier Name (Your Name): ");
+        String supplier = i.next();
 
+        // Add to array
+        parts[index] = new Parts(name, model, id, quantity, price, supplier);
+        double total = price * quantity;
+
+        System.out.println("Part has been added successfully.");
+        System.out.println("-------- Added Part Details --------");
+        System.out.println("Part Name: " + parts[index].partName);
+        System.out.println("Part Model Code:  "+ parts[index].partModel);
+        System.out.println("Part ID: " + parts[index].partId);
+        System.out.println("Quantity: " + parts[index].quantity);
+        System.out.println("Price : " + total);
+        System.out.println("Supplier Name: " + parts[index].Supplier);
+        System.out.println("------------------------------------");
+    }
  
-   
-
-    
-    
 }
