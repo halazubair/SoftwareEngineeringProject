@@ -7,23 +7,25 @@ public class RfqSystem {
     public static void main(String[] args) {  
         Scanner i = new Scanner(System.in);
 
-        // parts database
+        //---------------------------Part Array---------------------------------
+        
         Parts[] parts = new Parts[20];
         parts[0] = new Parts("Bearing", "B100", 21122, 50, 2000,   "Supplier A");
         parts[1] = new Parts("Bearing", "B100", 21122, 50, 1500,   "Supplier B");
         parts[2] = new Parts("Belt",    "BL9",  61200, 300, 1640, "Supplier A");
-        parts[3] = new Parts("Filter",  "F300", 15583, 100, 8.75, "Supplier B");
+        parts[3] = new Parts("Filter",  "F300", 15583, 100, 1007, "Supplier B");
         parts[4] = new Parts("Bearing", "B100", 21122, 50,  990,  "Supplier D");
-        parts[5] = new Parts("Filter",  "F300", 15086, 120, 8.75, "Supplier C");
+        parts[5] = new Parts("Filter",  "F300", 15583, 110, 1260, "Supplier C");
         parts[6] = new Parts("Bearing", "B100", 21122, 50,  1100,  "Supplier F");
         parts[7] = new Parts("Belt",    "BL9",  61200, 300, 1450, "Supplier B");
-        parts[8] = new Parts("Filter",  "F300", 14370, 60,  7.0,  "Supplier E");
-        parts[9] = new Parts("Bearing", "B100", 21122, 50,  1200,  "Supplier E");
-        parts[10] = new Parts("Bearing", "B100", 21122, 50,  1999,  "Supplier H");
-        parts[11] = new Parts("TurbineBlade", "TBX90", 99999,  2, 8000, "Supplier X"); 
-        parts[12] = new Parts("TurbineBlade", "TBX90", 99999,  2, 8500, "Supplier L"); 
-        parts[13] = new Parts("FuelControlUnit", "HLX44", 44444, 1, 15000, "Supplier Z"); 
-        parts[14] = new Parts("FuelControlUnit", "HLX44", 44444, 1, 14200, "Supplier N");
+        parts[8] = new Parts("Filter",  "F300", 15583, 50,  1200,  "Supplier E");
+        parts[9] = new Parts("Filter",  "F300", 15583, 50,  7.0,  "Supplier P");
+        parts[10] = new Parts("Bearing", "B100", 21122, 50,  1200,  "Supplier E");
+        parts[11] = new Parts("Bearing", "B100", 21122, 50,  1939,  "Supplier H");
+        parts[12] = new Parts("TurbineBlade", "TBX90", 99999,  2, 8000, "Supplier X"); 
+        parts[13] = new Parts("TurbineBlade", "TBX90", 99999,  2, 8500, "Supplier L"); 
+        parts[14] = new Parts("FuelControlUnit", "HLX44", 44444, 1, 15000, "Supplier Z"); 
+        parts[15] = new Parts("FuelControlUnit", "HLX44", 44444, 1, 14200, "Supplier N");
         
 
 
@@ -55,48 +57,48 @@ public class RfqSystem {
             System.out.print("Enter Part Name: ");     // e.g. Bearing, Belt, Filter
             String name = i.next();
 
-            System.out.print("Enter Part Model: ");    // e.g. B100, BL9, F300
+            System.out.print("Enter Part Model Code: ");    // e.g. B100, BL9, F300
             String partModel = i.next();
 
             System.out.print("Enter Part Id: ");       // e.g. 21122, 50000
             int partId = i.nextInt();
 
-            System.out.print("Enter the desired Quantity: ");
+            System.out.print("Enter the Desired Quantity: ");
             int partQuantity = i.nextInt();
 
             
              
-            // 1) Check if the part is rare
+         //---------------------------Rare Part---------------------------------
     boolean rare = isRarePart(name, partModel, partId);
 
     if (rare) {
-        // 🔹 RARE PART FLOW (with timer)
-        System.out.println("\n>>> This is a RARE part. Auction time: 10 seconds.");
-        Auction.startAuctionTimer();   // starts 10-second timer in Auction class
+        
+        System.out.println("\n This is a Rare Part. Auction time: 30 seconds.");
+        Auction.startAuctionTimer();   
 
-        // show all matching rare offers while timer is running
         searchPart(parts, name, partModel, partId, partQuantity);
-
-        // if time already finished, stop
+        //time has finished
         if (!Auction.auctionOpen) {
             System.out.println("Auction ended before you could choose a supplier. No order placed.");
         } else {
+            //if time did not finish,display part.
             Parts chosenPart = chooseSupplier(parts, name, partModel, partId, partQuantity, i);
-
+            //if the user did not choose the supplier he wants to finish the deal with and time has finished display.
             if (!Auction.auctionOpen) {
                 System.out.println("Auction ended before confirmation. No order placed.");
             } else {
+                //else if he did choose the supplier finalize the order and printorder information.
                 finalizeOrder(chosenPart, partQuantity, i);
             }
         }
 
     } else {
-        // 🔹 NORMAL PART FLOW (no auction, works exactly like before)
         searchPart(parts, name, partModel, partId, partQuantity);
 
         Parts chosenPart = chooseSupplier(parts, name, partModel, partId, partQuantity, i);
         finalizeOrder(chosenPart, partQuantity, i);
     }
+    //----------------------If user chose 2=supplier----------------------------
         } else {
            System.out.println("Supplier functionality not implemented yet.");
            }
@@ -109,17 +111,15 @@ public class RfqSystem {
         /*} else {
             System.out.println("Supplier functionality not implemented yet.");
         }*/
-
-     
-  
-                
+        
         i.close();}
-    
+//-----------------------------------------Methods-------------------------------------------
     public static void searchPart(Parts[] parts, String name, String partModel, int partId, int partQuantity) {
 
         boolean isFound = false;
 
-        System.out.println("\nAttachment Uploaded. Searching for part....");
+        System.out.println("\n------------Attachment Uploaded.------------"
+                + " Searching for part....");
         //----
         for (int i = 0; i < parts.length; i++) {
             Parts p = parts[i];
@@ -153,11 +153,8 @@ public class RfqSystem {
             System.out.println("No matching parts are available to display.");
         }
     }
-    
-    
-    
-    
-    
+//------------------------------------------------------------------------------------
+
     public static Parts chooseSupplier(Parts[] parts,String name,String partModel,int partId,int partQuantity,Scanner i){
 
     System.out.print("\nPlease enter the name of the supplier you prefer to buy from:");
@@ -206,27 +203,21 @@ public class RfqSystem {
     }
         return null;
 }
-    
-    
-    
-    
-   
+//------------------------------------------------------------------------------------
    public static void finalizeOrder(Parts chosen, int partQuantity, Scanner i) {
     if (chosen == null) {
-        System.out.println("\nCannot finalize order because no valid supplier/part was selected.");
+        System.out.println("\nCannot finalize order because no valid choice was selected.");
         return;
     }
 
-    System.out.print("\nIs this the correct part you want to order from this supplier? (Y/N): ");
+    System.out.print("\nWant to finalize this order? (Y/N): ");
     String confirm = i.next();
 
     if (confirm.equalsIgnoreCase("Y")) {
 
         // Send notification (Notifications class)
         Notification.sendNotification(
-            "New order confirmed for supplier " + chosen.Supplier +
-            " | Part: " + chosen.partName + " (" + chosen.partModel + ")" +
-            " | Qty: " + partQuantity
+            "New order confirmed for supplier " + chosen.Supplier + " , Part Name: " + chosen.partName + "[ " + chosen.partModel + "]" +" , Quantity: " + partQuantity
         );
 
         // Print receipt (Receipt class)
@@ -236,8 +227,7 @@ public class RfqSystem {
         System.out.println("Order not finalized.");
     }
 }
-   
-   
+//------------------------------------------------------------------------------------
    public static boolean isRarePart(String name, String partModel, int partId) {
     
     if (partModel.equalsIgnoreCase("TBX90")) {
@@ -247,6 +237,5 @@ public class RfqSystem {
         return true;
     }
     return false;
-}
-     
+}   
 }
