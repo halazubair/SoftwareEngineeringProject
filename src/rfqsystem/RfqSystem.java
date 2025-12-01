@@ -168,10 +168,10 @@ public class RfqSystem {
         return null;
 }
 //------------------------------------------------------------------------------------
-   public static void finalizeOrder(Parts chosen, int partQuantity, Scanner i) {
+   public static boolean finalizeOrder(Parts chosen, int partQuantity, Scanner i) {
     if (chosen == null) {
         System.out.println("\nCannot finalize order because no valid choice was selected.");
-        return;
+        return false;
     }
 
     System.out.print("\nWant to finalize this order? (Y/N): ");
@@ -186,19 +186,21 @@ public class RfqSystem {
 
        
         Invoice.printReceipt(chosen, partQuantity);
-
+        return true;
+        
     } else {
         System.out.println("Order not finalized.");
         Invoice.notFinalizedInvoice(chosen, partQuantity);
+        return false;
     }
 }
 //------------------------------------------------------------------------------------
    public static boolean isRarePart(String name, String partModel, int partId) {
     
-    if (partModel.equalsIgnoreCase("TBX90")) {
+    if (partModel.equalsIgnoreCase("TBX90") && name.equalsIgnoreCase("TurbineBlade")) {
         return true;
     }
-     if (partModel.equalsIgnoreCase("HLX44")) {
+     if (partModel.equalsIgnoreCase("HLX44")&& name.equalsIgnoreCase("FuelControlUnit")) {
         return true;
     }
     return false;

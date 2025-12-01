@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Supplier {
     
-    public static void showSupplierParts(Parts[] parts, Scanner i) {
+    public static boolean showSupplierParts(Parts[] parts, Scanner i) {
 
         System.out.println("------------ SUPPLIER VIEW ------------");
 
@@ -42,6 +42,7 @@ public class Supplier {
         if (!found) {
             System.out.println("No parts found for supplier: " + supplierName);
         }
+        return found;
     }
     //testt
 
