@@ -13,7 +13,7 @@ public class Supplier {
 
         // clear leftover newline from previous nextInt()
         i.nextLine();
-        String supplierName = i.nextLine();   // e.g. "Supplier A"
+        String supplierName = i.nextLine();   //Supplier A
 
         boolean found = false;
 
