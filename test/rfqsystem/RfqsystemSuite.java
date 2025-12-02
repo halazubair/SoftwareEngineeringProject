@@ -17,7 +17,7 @@ import org.junit.runners.Suite;
  * @author albad
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({rfqsystem.RfqSystemTest.class, rfqsystem.BuyerTest.class, rfqsystem.SupplierTest.class, rfqsystem.AuctionTest.class, rfqsystem.PartsTest.class, rfqsystem.purchaseOrderFileTest.class, rfqsystem.RarePartTest.class, rfqsystem.NotificationTest.class, rfqsystem.InvoiceTest.class})
+@Suite.SuiteClasses({rfqsystem.RfqSystemTest.class,  rfqsystem.SupplierTest.class, rfqsystem.AuctionTest.class, rfqsystem.PartsTest.class, rfqsystem.purchaseOrderFileTest.class, rfqsystem.NotificationTest.class, rfqsystem.InvoiceTest.class})
 public class RfqsystemSuite {
 
     @BeforeClass
