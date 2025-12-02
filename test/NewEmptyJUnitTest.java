@@ -69,7 +69,6 @@ public void testChooseSupplier_FindsSupplierA() {
     assertEquals(expectedResult, actualResult);
 }
 
-
 //null
 @Test
 public void testChooseSupplier_SupplierNotFound() {
