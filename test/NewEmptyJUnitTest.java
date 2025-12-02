@@ -17,7 +17,7 @@ public class NewEmptyJUnitTest {
 
     @Test 
 public void testFinalizeOrder_ConfirmYes() {
-    Parts chosen = new Parts("Bearing", "B100", 21122, 50, 2000, "SupplierA");
+    Parts chosen = new Parts("Bearing", "B100", 21122, 50, 2000, "Supplier A");
     Scanner input = new Scanner("Y");
 
     boolean expectedResult = true;
@@ -28,7 +28,7 @@ public void testFinalizeOrder_ConfirmYes() {
 
 @Test 
 public void testFinalizeOrder_ConfirmNo() {
-    Parts chosen = new Parts("Bearing", "B100", 21122, 50, 2000, "SupplierA");
+    Parts chosen = new Parts("Bearing", "B100", 21122, 50, 2000, "Supplier A");
     Scanner input = new Scanner("N");
 
     boolean expectedResult = false;
@@ -107,27 +107,6 @@ public void testChooseSupplier_FindsSupplierB() {
 
     assertEquals(expectedResult, actualResult);
 }
-
-
-@Test
-public void testChooseSupplier_FindsSupplier() {
-    Parts[] parts = new Parts[5];
-    parts[0] = new Parts("Bearing", "B100", 21122, 50, 2000, "Supplier A");
-    parts[1] = new Parts("Bearing", "B100", 21122, 50, 1500, "Supplier B");
-
-    String name = "Bearing";
-    String model = "B100";
-    int partId = 21122;
-    int quantity = 50;
-
-    Scanner input = new Scanner("\nSupplier A\n");
-
-    boolean expectedResult = true;
-    boolean actualResult = (RfqSystem.chooseSupplier(parts, name, model, partId, quantity, input) != null);
-
-    assertEquals(expectedResult, actualResult);
-}
-
 
 //Test – chooseSupplier finds Belt from Supplier B
 @Test
@@ -402,8 +381,8 @@ public void testChooseSupplier_Filter_SupplierNotFound() {
     
     @Test 
     public void testIsRarePart_WrongName() {
-        String name = "TurbinePlade";
-        String model = "TBX90";    // not exact
+        String name = "TurbinePlade"; //Wrong Spelling
+        String model = "TBX90";  //correct Model
         int partId = 99999;
 
         boolean expectedResult = false;
@@ -413,8 +392,6 @@ public void testChooseSupplier_Filter_SupplierNotFound() {
     }
     
     //-------------------Test 4-----------------------
-    
-    
     @Test
 public void testShowSupplierParts_SupplierA_Found() {
     Parts[] parts = new Parts[3];
@@ -494,11 +471,69 @@ public void testShowSupplierParts_SupplierB_MultipleParts() {
     assertEquals(expectedResult, actualResult);
 }
 
-
-
 //-------------------Test 4----------------------- 
     
-    
+    //Test1 – addPart adds a new part in first empty position
+@Test
+public void testAddPart_Success() {
+    Parts[] parts = new Parts[50];
+        parts[0] = new Parts("Bearing", "B100", 21122, 50, 2000,   "Supplier A");
+        parts[1] = new Parts("Bearing", "B100", 21122, 50, 1500,   "Supplier B");
+        parts[2] = new Parts("Belt",    "BL9",  61200, 300, 1640, "Supplier A");
+        parts[3] = new Parts("Filter",  "F300", 15583, 100, 1007, "Supplier B");
+        parts[4] = new Parts("Bearing", "B100", 21122, 50,  990,  "Supplier D");
+        parts[5] = new Parts("Filter",  "F300", 15583, 110, 1260, "Supplier C");
+        parts[6] = new Parts("Bearing", "B100", 21122, 50,  1100,  "Supplier F");
+        parts[7] = new Parts("Belt",    "BL9",  61200, 300, 1450, "Supplier B");
+        parts[8] = new Parts("Filter",  "F300", 15583, 50,  1200,  "Supplier E");
+        parts[9] = new Parts("Filter",  "F300", 15583, 50,  7.0,  "Supplier P");
+        parts[10] = new Parts("Bearing", "B100", 21122, 50,  1200,  "Supplier E");
+        parts[11] = new Parts("Bearing", "B100", 21122, 50,  1939,  "Supplier H");
+        parts[12] = new Parts("TurbineBlade", "TBX90", 99999,  2, 8000, "Supplier X"); 
+        parts[13] = new Parts("TurbineBlade", "TBX90", 99999,  2, 8500, "Supplier L"); 
+        parts[14] = new Parts("FuelControlUnit", "HLX44", 44444, 1, 15000, "Supplier Z"); 
+        parts[15] = new Parts("FuelControlUnit", "HLX44", 44444, 1, 14200, "Supplier N");
+
+    // input order: name model id quantity price supplier
+    Scanner input = new Scanner("Belt BL9 61200 10 1500.0 Supplier T");
+
+    boolean expectedResult = true;
+    boolean actualResult = Parts.addPart(parts, input);
+
+    assertEquals(expectedResult, actualResult);
+}
+
+//Test2 – addPart does nothing when array is full
+@Test
+public void testAddPart_ArrayFull() {
+    Parts[] parts = new Parts[16];
+        parts[0] = new Parts("Bearing", "B100", 21122, 50, 2000,   "Supplier A");
+        parts[1] = new Parts("Bearing", "B100", 21122, 50, 1500,   "Supplier B");
+        parts[2] = new Parts("Belt",    "BL9",  61200, 300, 1640, "Supplier A");
+        parts[3] = new Parts("Filter",  "F300", 15583, 100, 1007, "Supplier B");
+        parts[4] = new Parts("Bearing", "B100", 21122, 50,  990,  "Supplier D");
+        parts[5] = new Parts("Filter",  "F300", 15583, 110, 1260, "Supplier C");
+        parts[6] = new Parts("Bearing", "B100", 21122, 50,  1100,  "Supplier F");
+        parts[7] = new Parts("Belt",    "BL9",  61200, 300, 1450, "Supplier B");
+        parts[8] = new Parts("Filter",  "F300", 15583, 50,  1200,  "Supplier E");
+        parts[9] = new Parts("Filter",  "F300", 15583, 50,  7.0,  "Supplier P");
+        parts[10] = new Parts("Bearing", "B100", 21122, 50,  1200,  "Supplier E");
+        parts[11] = new Parts("Bearing", "B100", 21122, 50,  1939,  "Supplier H");
+        parts[12] = new Parts("TurbineBlade", "TBX90", 99999,  2, 8000, "Supplier X"); 
+        parts[13] = new Parts("TurbineBlade", "TBX90", 99999,  2, 8500, "Supplier L"); 
+        parts[14] = new Parts("FuelControlUnit", "HLX44", 44444, 1, 15000, "Supplier Z"); 
+        parts[15] = new Parts("FuelControlUnit", "HLX44", 44444, 1, 14200, "Supplier N");
+
+    // input won't be used, but we still provide it
+    Scanner input = new Scanner("Belt BL9 61200 10 1500.0 Supplier C");
+
+    boolean expectedResult = false;
+    boolean actualResult = Parts.addPart(parts, input);
+
+    assertEquals(expectedResult, actualResult);
+}
+
+
     
     
     

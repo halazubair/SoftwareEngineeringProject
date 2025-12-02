@@ -8,7 +8,7 @@ public class RfqSystem {
         Scanner i = new Scanner(System.in);
 
         //---------------------------Part Array---------------------------------
-        
+    
         Parts[] parts = new Parts[50];
         parts[0] = new Parts("Bearing", "B100", 21122, 50, 2000,   "Supplier A");
         parts[1] = new Parts("Bearing", "B100", 21122, 50, 1500,   "Supplier B");
@@ -36,7 +36,7 @@ public class RfqSystem {
 
         int choice = 0;
 
-        //-----------------choose role-------------------- 
+        //-----------------Role Based-------------------- 
         while (true) {
             System.out.print("Enter your choice: ");
             choice = i.nextInt();
@@ -99,9 +99,10 @@ public class RfqSystem {
     }
     //----------------------choice 2=Supplier----------------------------
         } else {
-            System.out.println("Choose your action: ");
+            System.out.println("-----------Choose your action----------- ");
             System.out.println("1.Display My Parts");
             System.out.println("2.Add Parts");
+            System.out.print("Enter Action: ");
             int action=i.nextInt();
             if(action==1){
                 Supplier s=new Supplier();
@@ -109,19 +110,17 @@ public class RfqSystem {
             }else if(action==2){
                     Parts.addPart(parts, i);
             }else{
-                System.out.println("Boo");
+                System.out.println("Action not Available.");
             }
-
            }
-          
-        
+
         i.close();
     }
 //-----------------------------------------Methods-------------------------------------------
 
     public static Parts chooseSupplier(Parts[] parts,String name,String partModel,int partId,int partQuantity,Scanner i){
 
-    System.out.print("\nPlease enter the name of the supplier you prefer to buy from:");
+    System.out.print("\nPlease enter the name of the supplier you prefer to buy from: ");
 
     // Clear the leftover newline from previous nextInt()
     i.nextLine();
@@ -181,7 +180,8 @@ public class RfqSystem {
 
         
         Notification.sendNotification(
-            "New order confirmed for supplier " + chosen.Supplier + " , Part Name: " + chosen.partName + "[ " + chosen.partModel + "]" +" , Quantity: " + partQuantity
+            "New order confirmed for supplier " + chosen.Supplier + " , Part Name: " + chosen.partName + 
+                    "( " + chosen.partModel + ")" +" , Quantity: " + partQuantity
         );
 
        
@@ -200,7 +200,7 @@ public class RfqSystem {
     if (partModel.equalsIgnoreCase("TBX90") && name.equalsIgnoreCase("TurbineBlade")) {
         return true;
     }
-     if (partModel.equalsIgnoreCase("HLX44")&& name.equalsIgnoreCase("FuelControlUnit")) {
+     if (partModel.equalsIgnoreCase("HLX44") && name.equalsIgnoreCase("FuelControlUnit")) {
         return true;
     }
     return false;

@@ -27,7 +27,7 @@ public class Parts {
     }
 
 
-    public static void addPart(Parts[] parts, Scanner i) {
+    public static boolean addPart(Parts[] parts, Scanner i) {
 
         int index = -1;
 
@@ -41,7 +41,7 @@ public class Parts {
 
         if (index == -1) {
             System.out.println("Cannot add more parts. The list is full.");
-            return;
+            return false;
         }
 
         System.out.println("---------Add Your New Part---------");
@@ -66,6 +66,7 @@ public class Parts {
 
         // Add to array
         parts[index] = new Parts(name, model, id, quantity, price, supplier);
+        
         double total = price * quantity;
 
         System.out.println("Part has been added successfully.");
@@ -77,6 +78,9 @@ public class Parts {
         System.out.println("Price : " + total);
         System.out.println("Supplier Name: " + parts[index].Supplier);
         System.out.println("------------------------------------");
+        
+        return true;
+        
     }
  
 }
