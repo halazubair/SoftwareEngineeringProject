@@ -7,17 +7,17 @@ public class Supplier {
     
     public static boolean showSupplierParts(Parts[] parts, Scanner i) {
 
-        System.out.println("------------ SUPPLIER VIEW ------------");
+        System.out.println("------------Supplier Information------------");
 
-        System.out.print("Enter your Supplier Name: ");
+        System.out.print("Enter your Name: ");
 
-        // clear leftover newline from previous nextInt()
+        // clear 
         i.nextLine();
-        String supplierName = i.nextLine();   //Supplier A
+        String supplierName = i.nextLine(); //Supplier enters his name.
 
         boolean found = false;
 
-        System.out.println("\nListing all parts for supplier: " + supplierName + "\n");
+        System.out.println("\nListing all parts of supplier: " + supplierName + "\n");
 
         for (int x = 0; x < parts.length; x++) {
             Parts p = parts[x];
@@ -29,13 +29,14 @@ public class Supplier {
             if (p.Supplier.equalsIgnoreCase(supplierName)) {
                 found = true;
 
-                System.out.println("------------ Part -----------");
+                System.out.println("------------ Part Information -----------");
                 System.out.println("Part ID:            " + p.partId);
                 System.out.println("Name:               " + p.partName);
                 System.out.println("Model:              " + p.partModel);
                 System.out.println("Available Quantity: " + p.quantity);
                 System.out.println("Unit Price:         " + p.price);
                 System.out.println("---------------------------------");
+                System.out.println();
             }
         }
 

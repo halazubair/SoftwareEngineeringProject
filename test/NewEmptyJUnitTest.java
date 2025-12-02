@@ -17,7 +17,7 @@ public class NewEmptyJUnitTest {
 
     @Test 
 public void testFinalizeOrder_ConfirmYes() {
-    Parts chosen = new Parts("Bearing", "B100", 21122, 50, 2000, "SupplierA");
+    Parts chosen = new Parts("Bearing", "B100", 21122, 50, 2000, "Supplier A");
     Scanner input = new Scanner("Y");
 
     boolean expectedResult = true;
@@ -28,7 +28,7 @@ public void testFinalizeOrder_ConfirmYes() {
 
 @Test 
 public void testFinalizeOrder_ConfirmNo() {
-    Parts chosen = new Parts("Bearing", "B100", 21122, 50, 2000, "SupplierA");
+    Parts chosen = new Parts("Bearing", "B100", 21122, 50, 2000, "Supplier A");
     Scanner input = new Scanner("N");
 
     boolean expectedResult = false;
@@ -108,27 +108,6 @@ public void testChooseSupplier_FindsSupplierB() {
 
     assertEquals(expectedResult, actualResult);
 }
-
-
-@Test
-public void testChooseSupplier_FindsSupplier() {
-    Parts[] parts = new Parts[5];
-    parts[0] = new Parts("Bearing", "B100", 21122, 50, 2000, "Supplier A");
-    parts[1] = new Parts("Bearing", "B100", 21122, 50, 1500, "Supplier B");
-
-    String name = "Bearing";
-    String model = "B100";
-    int partId = 21122;
-    int quantity = 50;
-
-    Scanner input = new Scanner("\nSupplier A\n");
-
-    boolean expectedResult = true;
-    boolean actualResult = (RfqSystem.chooseSupplier(parts, name, model, partId, quantity, input) != null);
-
-    assertEquals(expectedResult, actualResult);
-}
-
 
 //Test – chooseSupplier finds Belt from Supplier B
 @Test
@@ -403,8 +382,8 @@ public void testChooseSupplier_Filter_SupplierNotFound() {
     
     @Test 
     public void testIsRarePart_WrongName() {
-        String name = "TurbinePlade";
-        String model = "TBX90";    // not exact
+        String name = "TurbinePlade"; //Wrong Spelling
+        String model = "TBX90";  //correct Model
         int partId = 99999;
 
         boolean expectedResult = false;
@@ -414,8 +393,6 @@ public void testChooseSupplier_Filter_SupplierNotFound() {
     }
     
     //-------------------Test 4-----------------------
-    
-    
     @Test
 public void testShowSupplierParts_SupplierA_Found() {
     Parts[] parts = new Parts[3];
@@ -494,8 +471,6 @@ public void testShowSupplierParts_SupplierB_MultipleParts() {
 
     assertEquals(expectedResult, actualResult);
 }
-
-
 
 //-------------------Test 4----------------------- 
     
