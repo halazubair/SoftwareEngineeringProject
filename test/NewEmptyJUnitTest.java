@@ -15,38 +15,37 @@ public class NewEmptyJUnitTest {
     
      //-------------------Test 1-----------------------
 
+@Test 
+    public void testFinalizeOrder_ConfirmYes() {
+        Parts chosen = new Parts("Bearing", "B100", 21122, 50, 2000, "Supplier A");
+        Scanner input = new Scanner("Y");
+
+        boolean expectedResult = true;
+        boolean actualResult = RfqSystem.finalizeOrder(chosen,50,input,"Saudia Airlines", 123,"Alya",456 );
+
+        assertEquals(expectedResult, actualResult);
+    }
+
     @Test 
-public void testFinalizeOrder_ConfirmYes() {
-    Parts chosen = new Parts("Bearing", "B100", 21122, 50, 2000, "Supplier A");
-    Scanner input = new Scanner("Y");
+    public void testFinalizeOrder_ConfirmNo() {
+        Parts chosen = new Parts("Bearing", "B100", 21122, 50, 2000, "Supplier A");
+        Scanner input = new Scanner("N");
 
-    boolean expectedResult = true;
-    boolean actualResult = RfqSystem.finalizeOrder(chosen, 50, input);
+        boolean expectedResult = false;
+        boolean actualResult = RfqSystem.finalizeOrder(chosen,50,input,"Saudia Airlines",123,"Alya",456);
 
-    assertEquals(expectedResult, actualResult);
-}
+        assertEquals(expectedResult, actualResult);
+    }
 
-@Test 
-public void testFinalizeOrder_ConfirmNo() {
-    Parts chosen = new Parts("Bearing", "B100", 21122, 50, 2000, "Supplier A");
-    Scanner input = new Scanner("N");
+    @Test 
+    public void testFinalizeOrder_NullChosen() {
+        Scanner input = new Scanner("Y");
 
-    boolean expectedResult = false;
-    boolean actualResult = RfqSystem.finalizeOrder(chosen, 50, input);
+        boolean expectedResult = false;
+        boolean actualResult = RfqSystem.finalizeOrder(null,50,input,"Saudia Airlines",123,"Alya",456);
 
-    assertEquals(expectedResult, actualResult);
-}
-
-@Test 
-public void testFinalizeOrder_NullChosen() {
-    Scanner input = new Scanner("Y");
-
-    boolean expectedResult = false;
-    boolean actualResult = RfqSystem.finalizeOrder(null, 50, input);
-
-    assertEquals(expectedResult, actualResult);
-}
-
+        assertEquals(expectedResult, actualResult);
+    }
 //-------------------Test 2-----------------------
 
 //finds Supplier A

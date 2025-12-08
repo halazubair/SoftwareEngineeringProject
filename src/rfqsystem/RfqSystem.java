@@ -1,33 +1,45 @@
 package rfqsystem;
 
 import java.util.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 public class RfqSystem {
 
-    public static void main(String[] args) {  
+    public static void main(String[] args) throws FileNotFoundException{  
         Scanner i = new Scanner(System.in);
 
         //---------------------------Part Array---------------------------------
     
         Parts[] parts = new Parts[50];
-        parts[0] = new Parts("Bearing", "B100", 21122, 50, 2000,   "Supplier A");
-        parts[1] = new Parts("Bearing", "B100", 21122, 50, 1500,   "Supplier B");
-        parts[2] = new Parts("Belt",    "BL9",  61200, 300, 1640, "Supplier A");
-        parts[3] = new Parts("Filter",  "F300", 15583, 100, 1007, "Supplier B");
-        parts[4] = new Parts("Bearing", "B100", 21122, 50,  990,  "Supplier D");
-        parts[5] = new Parts("Filter",  "F300", 15583, 110, 1260, "Supplier C");
-        parts[6] = new Parts("Bearing", "B100", 21122, 50,  1100,  "Supplier F");
-        parts[7] = new Parts("Belt",    "BL9",  61200, 300, 1450, "Supplier B");
-        parts[8] = new Parts("Filter",  "F300", 15583, 50,  1200,  "Supplier E");
-        parts[9] = new Parts("Filter",  "F300", 15583, 50,  7.0,  "Supplier P");
-        parts[10] = new Parts("Bearing", "B100", 21122, 50,  1200,  "Supplier E");
-        parts[11] = new Parts("Bearing", "B100", 21122, 50,  1939,  "Supplier H");
-        parts[12] = new Parts("TurbineBlade", "TBX90", 99999,  2, 8000, "Supplier X"); 
-        parts[13] = new Parts("TurbineBlade", "TBX90", 99999,  2, 8500, "Supplier L"); 
-        parts[14] = new Parts("FuelControlUnit", "HLX44", 44444, 1, 15000, "Supplier Z"); 
-        parts[15] = new Parts("FuelControlUnit", "HLX44", 44444, 1, 14200, "Supplier N");
         
+        //-------------------------------------------
+        Scanner fileScanner = new Scanner(new File("Parts_Information.txt"));
+        int index = 0;
 
+        while (fileScanner.hasNextLine() && index < parts.length) {
+            String line = fileScanner.nextLine().trim();
+            if (line.isEmpty()) {
+                continue;   // skip empty lines
+            }
+
+            // Each line: name,code,id,quantity,price,supplier
+            String[] t = line.split(",");
+
+            String nameFile      = t[0].trim();
+            String partModelFile = t[1].trim();
+            int partIdFile       = Integer.parseInt(t[2].trim());
+            int quantityFile     = Integer.parseInt(t[3].trim());
+            double priceFile     = Double.parseDouble(t[4].trim());
+            String supplierFile  = t[5].trim();
+
+            parts[index] = new Parts(nameFile, partModelFile, partIdFile,
+                                     quantityFile, priceFile, supplierFile);
+            index++;
+        }
+        fileScanner.close();
+        
+        //-------------------------------------------
 
         System.out.println("-------Welcome to the RFQ System!-------");
         System.out.println("--------Please choose your role:-------");
@@ -49,26 +61,47 @@ public class RfqSystem {
                 break;
             } 
         }
+        
 
         //-----------------------Choice 1=Buyer---------------------- 
-        if (choice == 1) {
-            System.out.println("------------Upload part information-----------");
+         if (choice == 1) {
+             
+   
+    // ------------------- Buyer information -----------------------
+    System.out.println("------------Buyer Information-----------");
 
-            System.out.print("Enter Part Name: ");     // ex Bearing
+    System.out.print("Enter Airline Company Name: ");
+    String airlineCompany = i.next();   // use nextLine() if you want spaces
+
+    System.out.print("Enter Company ID: ");
+    int companyId = i.nextInt();
+
+    // NEW: who is ordering
+    i.nextLine();  // consume leftover newline after nextInt()
+    System.out.print("Enter Your Name: ");
+    String buyerName = i.nextLine();   // allows spaces
+
+    System.out.print("Enter Your Employee ID: ");
+    int employeeId = i.nextInt();
+    
+ 
+    
+    // ------------------- Part information -----------------------
+            System.out.println("------------Enter part information-----------");
+
+            System.out.print("Enter Part Name: ");    
             String name = i.next();
 
-            System.out.print("Enter Part Model Code: ");    // ex B100
+            System.out.print("Enter Part Model Code: ");   
             String partModel = i.next();
 
-            System.out.print("Enter Part Id: ");       // ex 21122
+            System.out.print("Enter Part Id: ");       
             int partId = i.nextInt();
 
             System.out.print("Enter the Desired Quantity: ");
             int partQuantity = i.nextInt();
 
-            
-             
-         //---------------------------Rare Part AUCTION---------------------------------
+          //---------------------------Rare Part AUCTION---------------------------------
     boolean rare = isRarePart(name, partModel, partId);
 
     if (rare) {
@@ -88,14 +121,14 @@ public class RfqSystem {
                 System.out.println("Auction ended before confirmation. No order placed.");
             } else {
                 //else if he did choose the supplier finalize the order and printorder information.
-                finalizeOrder(chosenPart, partQuantity, i);
+                finalizeOrder(chosenPart, partQuantity, i, airlineCompany, companyId,buyerName, employeeId);
             }
         }
     
     } else {
         purchaseOrderFile.purchaseOrderAttachment(parts, name, partModel, partId, partQuantity);  
         Parts chosenPart = chooseSupplier(parts, name, partModel, partId, partQuantity, i);
-        finalizeOrder(chosenPart, partQuantity, i);
+         finalizeOrder(chosenPart, partQuantity, i, airlineCompany, companyId,buyerName, employeeId);
     }
     //----------------------choice 2=Supplier----------------------------
         } else {
@@ -167,7 +200,7 @@ public class RfqSystem {
         return null;
 }
 //------------------------------------------------------------------------------------
-   public static boolean finalizeOrder(Parts chosen, int partQuantity, Scanner i) {
+   public static boolean finalizeOrder(Parts chosen, int partQuantity, Scanner i, String airlineCompany, int companyId, String buyerName, int employeeId) {
     if (chosen == null) {
         System.out.println("\nCannot finalize order because no valid choice was selected.");
         return false;
@@ -178,19 +211,21 @@ public class RfqSystem {
 
     if (confirm.equalsIgnoreCase("Y")) {
 
-        
         Notification.sendNotification(
-            "New order confirmed for supplier " + chosen.Supplier + " , Part Name: " + chosen.partName + 
-                    "( " + chosen.partModel + ")" +" , Quantity: " + partQuantity
+            "New order confirmed from company " + airlineCompany +
+            " (Company ID: " + companyId + "), ordered by " + buyerName +
+            " (Employee ID: " + employeeId + ") for supplier " + chosen.Supplier +
+            ", Part Name: " + chosen.partName + " (" + chosen.partModel + ")" +
+            ", Quantity: " + partQuantity
         );
 
-       
-        Invoice.printReceipt(chosen, partQuantity);
+        Invoice.printReceipt(chosen, partQuantity,airlineCompany, companyId, buyerName, employeeId);
+        
         return true;
         
     } else {
         System.out.println("Order not finalized.");
-        Invoice.notFinalizedInvoice(chosen, partQuantity);
+        Invoice.notFinalizedInvoice(chosen, partQuantity,airlineCompany, companyId, buyerName, employeeId);
         return false;
     }
 }

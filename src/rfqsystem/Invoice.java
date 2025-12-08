@@ -10,11 +10,16 @@ package rfqsystem;
  */
 public class Invoice {
     
-    public static void printReceipt(Parts part, int quantity) {
+    public static void printReceipt(Parts part, int quantity, String airlineCompany, int companyId, String buyerName, int employeeId) {
 
         double total = part.price * quantity;
 
         System.out.println("\n--------- ORDER RECEIPT---------");
+        System.out.println("Airline Company:   " + airlineCompany);
+        System.out.println("Company ID:        " + companyId);
+        System.out.println("Buyer Name:        " + buyerName);
+        System.out.println("Employee ID:       " + employeeId);
+        System.out.println("-----------------------------------");
         System.out.println("Supplier:          " + part.Supplier);
         System.out.println("Part Name:         " + part.partName);
         System.out.println("Part Model:        " + part.partModel);
@@ -26,11 +31,17 @@ public class Invoice {
         System.out.println("-----------------------------------");
     }
     
-    public static void notFinalizedInvoice(Parts part, int quantity) {
+    
+    public static void notFinalizedInvoice(Parts part, int quantity, String airlineCompany, int companyId, String buyerName, int employeeId) {
 
         double total = part.price * quantity;
 
-        System.out.println("\n---------ORDER RECEIPT---------");
+         System.out.println("\n--------- ORDER RECEIPT---------");
+        System.out.println("Airline Company:   " + airlineCompany);
+        System.out.println("Company ID:        " + companyId);
+        System.out.println("Buyer Name:        " + buyerName);
+        System.out.println("Employee ID:       " + employeeId);
+        System.out.println("-----------------------------------");
         System.out.println("Supplier:          " + part.Supplier);
         System.out.println("Part Name:         " + part.partName);
         System.out.println("Part Model:        " + part.partModel);
@@ -42,4 +53,5 @@ public class Invoice {
         System.out.println("-----------------------------------");
     }
     
+   
 }

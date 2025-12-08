@@ -1,0 +1,16 @@
+Bearing,B100,21122,50,2000,Supplier A
+Bearing,B100,21122,50,1500,Supplier B
+Belt,BL9,61200,300,1640,Supplier A
+Filter,F300,15583,100,1007,Supplier B
+Bearing,B100,21122,50,990,Supplier D
+Filter,F300,15583,110,1260,Supplier C
+Bearing,B100,21122,50,1100,Supplier F
+Belt,BL9,61200,300,1450,Supplier B
+Filter,F300,15583,50,1200,Supplier E
+Filter,F300,15583,50,7.0,Supplier P
+Bearing,B100,21122,50,1200,Supplier E
+Bearing,B100,21122,50,1939,Supplier H
+TurbineBlade,TBX90,99999,2,8000,Supplier X
+TurbineBlade,TBX90,99999,2,8500,Supplier L
+FuelControlUnit,HLX44,44444,1,15000,Supplier Z
+FuelControlUnit,HLX44,44444,1,14200,Supplier N

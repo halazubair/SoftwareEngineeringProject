@@ -40,16 +40,7 @@ public class RfqSystemTest {
 
     /**
      * Test of main method, of class RfqSystem.
-     */
-    @Test
-    public void testMain() {
-        System.out.println("main");
-        String[] args = null;
-        RfqSystem.main(args);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
+   
     /**
      * Test of chooseSupplier method, of class RfqSystem.
      */
@@ -78,7 +69,7 @@ public class RfqSystemTest {
         Parts chosen = null;
         int partQuantity = 0;
         Scanner i = null;
-        RfqSystem.finalizeOrder(chosen, partQuantity, i);
+        RfqSystem.finalizeOrder(chosen, partQuantity, i,"Saudia Airlines", 123,"Alya", 456);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

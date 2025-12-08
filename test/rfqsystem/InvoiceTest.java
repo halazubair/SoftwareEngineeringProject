@@ -37,30 +37,6 @@ public class InvoiceTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of printReceipt method, of class Invoice.
-     */
-    @Test
-    public void testPrintReceipt() {
-        System.out.println("printReceipt");
-        Parts part = null;
-        int quantity = 0;
-        Invoice.printReceipt(part, quantity);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
 
-    /**
-     * Test of notFinalizedInvoice method, of class Invoice.
-     */
-    @Test
-    public void testNotFinalizedInvoice() {
-        System.out.println("notFinalizedInvoice");
-        Parts part = null;
-        int quantity = 0;
-        Invoice.notFinalizedInvoice(part, quantity);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
     
 }
