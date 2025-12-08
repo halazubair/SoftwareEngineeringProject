@@ -69,7 +69,7 @@ public class RfqSystem {
             
              
          //---------------------------Rare Part AUCTION---------------------------------
-    boolean rare = isRarePart(name, partModel);
+    boolean rare = isRarePart(name, partModel, partId);
 
     if (rare) {
         
@@ -195,7 +195,7 @@ public class RfqSystem {
     }
 }
 //------------------------------------------------------------------------------------
-   public static boolean isRarePart(String name, String partModel) {
+   public static boolean isRarePart(String name, String partModel, int partId) {
     
     if (partModel.equalsIgnoreCase("TBX90") && name.equalsIgnoreCase("TurbineBlade")) {
         return true;
